@@ -1,17 +1,17 @@
-const User = require('../models/userModel'); 
+const User = require('../models/userModel');
 
 // Get all users
-exports.handleGetAllUsers = async (req, res) => {
+async function handleGetAllUsers(req, res) {
     try {
         const users = await User.find({});
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-};
+}
 
 // Get user by ID
-exports.handleGetUserById = async (req, res) => {
+async function handleGetUserById(req, res) {
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -19,10 +19,10 @@ exports.handleGetUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-};
+}
 
 // Update user by ID
-exports.handleUpdateUserById = async (req, res) => {
+async function handleUpdateUserById(req, res) {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedUser) return res.status(404).json({ message: 'User not found' });
@@ -30,10 +30,10 @@ exports.handleUpdateUserById = async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-};
+}
 
 // Delete user by ID
-exports.handleDeleteUserById = async (req, res) => {
+async function handleDeleteUserById(req, res) {
     try {
         const deletedUser = await User.findByIdAndDelete(req.params.id);
         if (!deletedUser) return res.status(404).json({ message: 'User not found' });
@@ -41,10 +41,10 @@ exports.handleDeleteUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-};
+}
 
 // Create a new user
-exports.handleCreateUser = async (req, res) => {
+async function handleCreateUser(req, res) {
     try {
         const newUser = new User(req.body);
         const savedUser = await newUser.save();
@@ -52,4 +52,13 @@ exports.handleCreateUser = async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
+}
+
+// Export all handlers
+module.exports = {
+    handleGetAllUsers,
+    handleGetUserById,
+    handleUpdateUserById,
+    handleDeleteUserById,
+    handleCreateUser,
 };
